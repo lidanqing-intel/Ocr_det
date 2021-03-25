@@ -32,9 +32,10 @@ include_directories("${PADDLE_LIB}/third_party/install/protobuf/include")
 include_directories("${PADDLE_LIB}/third_party/install/glog/include")
 include_directories("${PADDLE_LIB}/third_party/install/gflags/include")
 include_directories("${PADDLE_LIB}/third_party/install/xxhash/include")
+include_directories("${PADDLE_LIB}/third_party/install/cryptopp/include")
 include_directories("${PADDLE_LIB}/third_party/install/zlib/include")
-include_directories("${PADDLE_LIB}/third_party/boost")
-include_directories("${PADDLE_LIB}/third_party/eigen3")
+#include_directories("${PADDLE_LIB}/third_party/boost")
+#include_directories("${PADDLE_LIB}/third_party/eigen3")
 
 if (USE_TENSORRT AND WITH_GPU)
       include_directories("${TENSORRT_ROOT}/include")
@@ -47,6 +48,7 @@ link_directories("${PADDLE_LIB}/third_party/install/protobuf/lib")
 link_directories("${PADDLE_LIB}/third_party/install/glog/lib")
 link_directories("${PADDLE_LIB}/third_party/install/gflags/lib")
 link_directories("${PADDLE_LIB}/third_party/install/xxhash/lib")
+link_directories("${PADDLE_LIB}/third_party/install/cryptopp/lib")
 link_directories("${PADDLE_LIB}/paddle/lib")
 
 add_executable(${DEMO_NAME} ${DEMO_NAME}.cc)
@@ -67,16 +69,16 @@ endif()
 # Note: libpaddle_inference_api.so/a must put before libpaddle_fluid.so/a
 if(WITH_STATIC_LIB)
   set(DEPS
-      ${PADDLE_LIB}/paddle/lib/libpaddle_fluid${CMAKE_STATIC_LIBRARY_SUFFIX})
+      ${PADDLE_LIB}/paddle/lib/libpaddle_inference${CMAKE_STATIC_LIBRARY_SUFFIX})
 else()
   set(DEPS
-      ${PADDLE_LIB}/paddle/lib/libpaddle_fluid${CMAKE_SHARED_LIBRARY_SUFFIX})
+      ${PADDLE_LIB}/paddle/lib/libpaddle_inference${CMAKE_SHARED_LIBRARY_SUFFIX})
 endif()
 
 set(EXTERNAL_LIB "-lrt -ldl -lpthread")
 set(DEPS ${DEPS}
     ${MATH_LIB} ${MKLDNN_LIB}
-    glog gflags protobuf z xxhash
+    glog gflags protobuf z xxhash cryptopp
     ${EXTERNAL_LIB})
 
 if(WITH_GPU)
