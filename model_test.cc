@@ -31,6 +31,7 @@ void PrepareConfig(AnalysisConfig *config, int threads) {
   config->EnableProfile();
   config->EnableMKLDNN();
   config->SwitchIrOptim(true);
+  config->pass_builder()->AppendPass("interpolate_mkldnn_pass");
 }
 
 bool test_map_cnn(int threads, int warmup, int repeat) {
